@@ -23,5 +23,15 @@
         ["\"", "\""],
         ["'", "'"],
         ["[","]"]
-    ]
+    ],
+    "folding": {
+        "markers": {
+          "start": "^(?:INT\\.|EXT\\.|INT/EXT\\.) .+$",
+          "end": "^\n(?=(?:^(?:INT\\.|EXT\\.).+$))"
+        // "end": "^PING$"
+        //   "end": "\n^(?:INT\\. |EXT\\. |INT\\.\/EXT\\. ).+$"
+        // "start": "^NORA$",
+        // "end": "^AUDREY$"
+        }
+      },
 }

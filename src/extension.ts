@@ -7,6 +7,7 @@ import * as afterparser from "./afterwriting-parser";
 import { GeneratePdf } from "./pdf/pdf";
 import * as username from 'username';
 import { findCharacterThatSpokeBeforeTheLast, trimCharacterExtension, addForceSymbolToCharacter } from "./utils";
+import { onceDocumentLoaded } from './events';
 
 export class FountainOutlineTreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
 	public readonly onDidChangeTreeDataEmitter: vscode.EventEmitter<vscode.TreeItem | null> =
@@ -145,7 +146,6 @@ const fontFinder = require('font-finder');
 
 const webviewHtml = fs.readFileSync(__dirname + path.sep + 'webview.html', 'utf8');
 function updateWebView(titlepage: string, script: string) {
-
 	var config = getFountainConfig(lastFountainEditor);
 	var directConfig = vscode.workspace.getConfiguration("fountain.pdf", vscode.window.activeTextEditor.document.uri);
 	var pageClasses = "innerpage";
@@ -175,7 +175,7 @@ function padZero(i: any) {
 
 /**
  * Approximates length of the screenplay based on the overall length of dialogue and action tokens
- * 
+ *
  * According to this paper: http://www.office.usp.ac.jp/~klinger.w/2010-An-Analysis-of-Articulation-Rates-in-Movies.pdf
  * The average amount of syllables per second in the 14 movies analysed is 5.1
  * The average amount of letters per syllable is 3 (https://strainindex.wordpress.com/2010/03/13/syllable-word-and-sentence-length/)
@@ -256,6 +256,18 @@ export function activate(context: ExtensionContext) {
 		var rawcontent = vscode.window.activeTextEditor.document.getText();
 		var output = afterparser.parse(rawcontent, getFountainConfig(lastFountainEditor), true);
 		updateWebView(output.titleHtml, output.scriptHtml);
+		onceDocumentLoaded(() => {
+			console.warn("Hello Rick")
+			// if (settings.scrollPreviewWithEditor) {
+			// 	setTimeout(() => {
+			// 		const initialLine = +settings.line;
+			// 		if (!isNaN(initialLine)) {
+			// 			scrollDisabled = true;
+			// 			scrollToRevealSourceLine(initialLine);
+			// 		}
+			// 	}, 0);
+			// }
+		});
 	}));
 
 	//Jump to line command
